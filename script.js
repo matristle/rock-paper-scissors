@@ -58,12 +58,13 @@ function loses()
     
     if (computerScore == 5)
     {
+        compScore.textContent = `Machine's score  ${computerScore}`;
+        yourScore.textContent = `Your score  ${playerScore}`;
+        
         result = document.createElement('p');
         result.textContent = `You lost`;
         metaContainer.append(result);
         result.setAttribute('.result');
-        compScore.textContent = `Machine's score  ${computerScore}`;
-        yourScore.textContent = `Your score  ${playerScore}`;
     }
     return roundResult;
 }
