@@ -1,12 +1,13 @@
 let playerSelection, computerSelection;
 let playerScore = 0, computerScore = 0;
-let spam = 0, repeatIteration = false;
+let spam = 0, repeatIteration = false, scoreBirth = true;
 let roundResult, finalResult;
+let metaContainer, scores, yourScore, compScore, result;
 
 
 //Computer moves/choices
 
-function computerPlay(choice) 
+function computerPlay() 
 { 
     const choices = ['rock', 'paper', 'scissors'];
     choice = choices[ Math.floor(Math.random() * 2.99)];
@@ -28,9 +29,22 @@ const capitalize = (string) =>
 
 function wins()
 {
+   
     roundResult = `You've won this round! ${capitalize(playerSelection)} beats ${capitalize(computerSelection)}`;
     playerScore++;
+    
 
+    if (playerScore == 5)
+    {
+        compScore.textContent = `Machine's score  ${computerScore}`;
+        yourScore.textContent = `Your score  ${playerScore}`;
+        
+        result = document.createElement('p');
+        result.textContent = `You won!`;
+        metaContainer.append(result);
+        result.setAttribute('.result');
+    }
+   
     return roundResult;
 }
 
@@ -38,9 +52,19 @@ function wins()
 
 function loses()
 {
+    
     roundResult = `You've lost this round. ${capitalize(computerSelection)} beats ${capitalize(playerSelection)}...`;
     computerScore++;
-
+    
+    if (computerScore == 5)
+    {
+        result = document.createElement('p');
+        result.textContent = `You lost`;
+        metaContainer.append(result);
+        result.setAttribute('.result');
+        compScore.textContent = `Machine's score  ${computerScore}`;
+        yourScore.textContent = `Your score  ${playerScore}`;
+    }
     return roundResult;
 }
 
@@ -61,9 +85,10 @@ function roundOfRPS(playerSelection, computerSelection)
     {
         loses();
     }
-
+    
     else
     {
+
         repeatIteration = true;
 
         if (playerSelection.toLowerCase() == computerSelection.toLowerCase()) 
@@ -91,7 +116,7 @@ function roundOfRPS(playerSelection, computerSelection)
 /* The game itself including 5 rounds of Rock Paper Scissors with
 persistent prompt of player input after each round */
 
-function game()
+/* function game()
 {
     for (let i = 1; i <= 5; i++)
     {   
@@ -121,11 +146,45 @@ function game()
     {
         alert(`You lost to the machine unfortunately. Wanna get your revenge?`);
     }
-}
+} */
 
-//Invoking the function for playing 5 rounds of Rock Paper Scissors
 
-game();
+const buttons = document.querySelectorAll('button');
+buttons.forEach( (button) =>
+{
+    button.addEventListener('click', function (e)
+    {
+      
+        if (playerScore !== 5 && computerScore !== 5)
+        {
+            computerSelection = computerPlay();
+            playerSelection = button.id;
+            roundOfRPS(playerSelection, computerSelection);
+            
+        
+            if (scoreBirth)
+            {
+                metaContainer = document.querySelector('.meta-container');
+                scores = document.createElement('div');
+                yourScore = document.createElement('p');
+                compScore = document.createElement('p');
+                metaContainer.append(scores);
+                scores.append(yourScore, compScore);
+                scores.setAttribute('id', 'board');
+                scoreBirth = false;
+            }
+    
+            compScore.textContent = `Machine's score  ${computerScore}`;
+            yourScore.textContent = `Your score  ${playerScore}`;
+
+        }
+
+    
+        
+    });
+});
+
+
 
 
 
